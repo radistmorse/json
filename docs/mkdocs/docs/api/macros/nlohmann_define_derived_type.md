@@ -40,7 +40,7 @@ The base type **must** be already serializable/deserializable.
 :   name of the base type (class, struct) `type` is derived from
 
 `member` (in)
-:   name of the member variable to serialize/deserialize; up to 64 members can be given as comma-separated list
+:   name of the member variable to serialize/deserialize; up to 63 members can be given as comma-separated list
 
 ## Default definition
 
