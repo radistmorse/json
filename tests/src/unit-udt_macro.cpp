@@ -97,7 +97,7 @@ class person_with_private_data_2
 class person_with_private_data_3
 {
   private:
-    std::string name{};
+    std::string name{}; // NOLINT(readability-redundant-member-init)
     int age = 0;
     json metadata = nullptr;
 
@@ -140,7 +140,7 @@ class derived_person_with_private_data_3 : public person_with_private_data_3
 class person_with_private_data_4
 {
   private:
-    std::string name{};
+    std::string name{}; // NOLINT(readability-redundant-member-init)
     int age = 0;
     json metadata = nullptr;
 
@@ -370,7 +370,7 @@ NLOHMANN_DEFINE_DERIVED_TYPE_NON_INTRUSIVE_WITH_DEFAULT(derived_person_without_p
 class person_without_private_data_4
 {
   public:
-    std::string name{};
+    std::string name{}; // NOLINT(readability-redundant-member-init)
     int age = 0;
     json metadata = nullptr;
 
@@ -412,7 +412,7 @@ class derived_person_without_private_data_4 : public person_without_private_data
 class person_without_private_data_5
 {
   public:
-    std::string name{};
+    std::string name{}; // NOLINT(readability-redundant-member-init)
     int age = 0;
     json metadata = nullptr;
 
@@ -454,7 +454,7 @@ NLOHMANN_DEFINE_DERIVED_TYPE_NON_INTRUSIVE_WITH_NAMES(derived_person_without_pri
 class person_without_private_data_6
 {
   public:
-    std::string name{};
+    std::string name{}; // NOLINT(readability-redundant-member-init)
     int age = 0;
     json metadata = nullptr;
 
@@ -832,7 +832,7 @@ TEST_CASE_TEMPLATE("Serialization/deserialization via NLOHMANN_DEFINE_DERIVED_TY
     }
 }
 
-TEST_CASE_TEMPLATE("Serialization/deserialization via NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_NAMES and NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_NAMES", T,
+TEST_CASE_TEMPLATE("Serialization/deserialization via NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_NAMES and NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_NAMES", T, // NOLINT(readability-math-missing-parentheses)
                    persons::person_with_private_data_3,
                    persons::person_without_private_data_4,
                    persons::person_without_private_data_5)
@@ -954,7 +954,7 @@ TEST_CASE_TEMPLATE("Serialization/deserialization via NLOHMANN_DEFINE_DERIVED_TY
     }
 }
 
-TEST_CASE_TEMPLATE("Serialization/deserialization via NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT_WITH_NAMES and NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT_WITH_NAMES", T,
+TEST_CASE_TEMPLATE("Serialization/deserialization via NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT_WITH_NAMES and NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT_WITH_NAMES", T, // NOLINT(readability-math-missing-parentheses)
                    persons::person_with_private_data_4,
                    persons::person_without_private_data_6)
 {
