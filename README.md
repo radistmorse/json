@@ -817,14 +817,33 @@ Some important things:
 
 #### Simplify your life with macros
 
+
 If you just want to serialize/deserialize some structs, the `to_json`/`from_json` functions can be a lot of boilerplate.
 
-There are two macros to make your life easier as long as you (1) want to use a JSON object as serialization and (2) want to use the member variable names as object keys in that object:
+There are several macros to make your life easier if you want to use a JSON object as serialization:
 
-- `NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(name, member1, member2, ...)` is to be defined inside the namespace of the class/struct to create code for.
-- `NLOHMANN_DEFINE_TYPE_INTRUSIVE(name, member1, member2, ...)` is to be defined inside the class/struct to create code for. This macro can also access private members.
+- `NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(name, member1, member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_NAMES(name, "json_member1", member1, "json_member2", member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(name, member1, member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT_WITH_NAMES(name, "json_member1", member1, "json_member2", member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_ONLY_SERIALIZE(name, member1, member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_ONLY_SERIALIZE_WITH_NAMES(name, "json_member1", member1, "json_member2", member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_INTRUSIVE(name, member1, member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_NAMES(name, "json_member1", member1, "json_member2", member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT(name, member1, member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT_WITH_NAMES(name, "json_member1", member1, "json_member2", member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_INTRUSIVE_ONLY_SERIALIZE(name, member1, member2, ...)`
+- `NLOHMANN_DEFINE_TYPE_INTRUSIVE_ONLY_SERIALIZE_WITH_NAMES(name, "json_member1", member1, "json_member2", member2, ...)`
 
-In both macros, the first parameter is the name of the class/struct, and all remaining parameters name the members.
+The explanation for the names is such:
+
+- The `NON_INTRUSIVE` macros should be defined inside the namespace of the class/struct to create code for and thus doesn't have access to the private fields, the `INTRUSIVE` is to be defined inside the class/struct.
+- The `WITH_DEFAULT` macros should be used when not all fields are required to be present in the JSON, the ones without `WITH_DEFAULTS` will raise an exception if the fields are missing.
+- The `ONLY_SERIALIZE` macros should be used if you only want the `to_json` function to be created. This option excludes the `WITH_DEFAULT` variant since it is only applicable to `from_json`.
+- The `WITH_NAMES` macros should be used if you want custom names for you JSON fields, the ones without `WITH_NAMES` will use the member names for JSON fields.
+- Each of the aforementioned macros has a `DEFINE_DERIVED_TYPE` variant (e.g. `NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE`) which can be used for the child class, with parent that already have `to_json`/`from_json` defined, possibly with a macro of its own.
+
+For all the macros, the first parameter is the name of the class/struct, and all remaining parameters name the members. The `DERIVED` variants require additional second argument for the parent class.
 
 ##### Examples
 
@@ -836,7 +855,19 @@ namespace ns {
 }
 ```
 
-Here is an example with private members, where `NLOHMANN_DEFINE_TYPE_INTRUSIVE` is needed:
+If you want to inherit the `person` struct and add a field to it, it can be done with:
+
+```cpp
+namespace ns {
+    struct person_derived : person {
+        std:string email;
+    };
+    
+    NLOHMANN_DEFINE_DERIVED_TYPE_NON_INTRUSIVE(person_derived, person, email)
+}
+```
+
+Here is an example with private members, where `INTRUSIVE` is needed:
 
 ```cpp
 namespace ns {
@@ -848,6 +879,24 @@ namespace ns {
 
       public:
         NLOHMANN_DEFINE_TYPE_INTRUSIVE(address, street, housenumber, postcode)
+    };
+}
+```
+
+Or in case if you use some naming convention that you do not want to expose to JSON:
+
+```cpp
+namespace ns {
+    class address {
+      private:
+        std::string m_street;
+        int m_housenumber;
+        int m_postcode;
+
+      public:
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_NAMES(address, "street", m_street,
+                                                           "housenumber", m_housenumber,
+                                                           "postcode", m_postcode)
     };
 }
 ```
