@@ -3,7 +3,7 @@
 // |  |  |__   |  |  | | | |  version 3.11.3
 // |_____|_____|_____|_|___|  https://github.com/nlohmann/json
 //
-// SPDX-FileCopyrightText: 2013 - 2024 Niels Lohmann <https://nlohmann.me>
+// SPDX-FileCopyrightText: 2013 - 2025 Niels Lohmann <https://nlohmann.me>
 // SPDX-FileCopyrightText: 2018 Vitaliy Manushkin <agri@akamo.info>
 // SPDX-License-Identifier: MIT
 
@@ -28,7 +28,7 @@ class alt_string
   public:
     using value_type = std::string::value_type;
 
-    static constexpr auto npos = static_cast<std::size_t>(-1);
+    static constexpr auto npos = (std::numeric_limits<std::size_t>::max)();
 
     alt_string(const char* str): str_impl(str) {}
     alt_string(const char* str, std::size_t count): str_impl(str, count) {}
@@ -343,13 +343,13 @@ TEST_CASE("alternative string type")
 
         CHECK_NOTHROW(doc1.patch(patch1));
         alt_json doc1_ans = alt_json::parse(R"(
-                {
-                    "a": {
-                        "foo": 1,
-                        "b": [ "foo", "bar" ]
-                    }
-                }
-            )");
+                                            {
+                                                "a": {
+                                                    "foo": 1,
+                                                    "b": [ "foo", "bar" ]
+                                                }
+                                            }
+                                           )");
         CHECK(doc1.patch(patch1) == doc1_ans);
     }
 

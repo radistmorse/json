@@ -3,7 +3,7 @@
 // |  |  |__   |  |  | | | |  version 3.11.3
 // |_____|_____|_____|_|___|  https://github.com/nlohmann/json
 //
-// SPDX-FileCopyrightText: 2013 - 2024 Niels Lohmann <https://nlohmann.me>
+// SPDX-FileCopyrightText: 2013 - 2025 Niels Lohmann <https://nlohmann.me>
 // SPDX-License-Identifier: MIT
 
 #include "doctest_compatibility.h"
@@ -75,7 +75,7 @@ class SaxEventLogger
 
     bool start_object(std::size_t elements)
     {
-        if (elements == static_cast<std::size_t>(-1))
+        if (elements == (std::numeric_limits<std::size_t>::max)())
         {
             events.emplace_back("start_object()");
         }
@@ -100,7 +100,7 @@ class SaxEventLogger
 
     bool start_array(std::size_t elements)
     {
-        if (elements == static_cast<std::size_t>(-1))
+        if (elements == (std::numeric_limits<std::size_t>::max)())
         {
             events.emplace_back("start_array()");
         }
