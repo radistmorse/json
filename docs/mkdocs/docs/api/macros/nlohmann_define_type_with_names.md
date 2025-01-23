@@ -33,14 +33,14 @@ For further information please refer to the corresponding macros without `WITH_N
 :   name of the base type (class, struct) `type` is derived from (used only in `DEFINE_DERIVED_TYPE` macros)
 
 `json_member_name` (in)
-:   used in named conversion macros, must be provided for each member variable and will be used as a member variable name in the resulting json
+:   json name that will be used for the next member variable
 
 `member` (in)
 :   name of the member variable to serialize/deserialize
 
 ## Examples
 
-??? example "Example (1): NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE"
+??? example "Example (1): NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_NAMES"
 
     Consider the following complete example:
 

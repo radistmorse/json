@@ -62,7 +62,7 @@ See examples below for the concrete generated code.
 !!! warning "Implementation limits"
 
     - The current implementation is limited to at most 63 member variables. If you want to serialize/deserialize types
-      with more than 64 member variables, you need to define the `to_json`/`from_json` functions manually.
+      with more than 63 member variables, you need to define the `to_json`/`from_json` functions manually.
 
 ## Examples
 
