@@ -1128,10 +1128,10 @@ TEST_CASE_TEMPLATE("Serialization of non-default-constructible classes via NLOHM
 }
 
 TEST_CASE_TEMPLATE("Serialization of non-default-constructible classes via NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE_ONLY_SERIALIZE and NLOHMANN_DEFINE_DERIVED_TYPE_NON_INTRUSIVE_ONLY_SERIALIZE", Pair, // NOLINT(readability-math-missing-parentheses)
-                   std::pair<nlohmann::json, persons::derived_person_only_serialize_public>,
-                   std::pair<nlohmann::json, persons::derived_person_only_serialize_private>,
-                   std::pair<nlohmann::ordered_json, persons::derived_person_only_serialize_public>,
-                   std::pair<nlohmann::ordered_json, persons::derived_person_only_serialize_private>)
+                   std::pair<nlohmann::json, persons::derived_person_only_serialize_public_1>,
+                   std::pair<nlohmann::json, persons::derived_person_only_serialize_private_1>,
+                   std::pair<nlohmann::ordered_json, persons::derived_person_only_serialize_public_1>,
+                   std::pair<nlohmann::ordered_json, persons::derived_person_only_serialize_private_1>)
 {
     using Json = typename Pair::first_type;
     using T = typename Pair::second_type;
