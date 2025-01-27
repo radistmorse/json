@@ -85,7 +85,7 @@ Some important things:
 
 If you just want to serialize/deserialize some structs, the `to_json`/`from_json` functions can be a lot of boilerplate.
 
-There are several macros to make your life easier as long as you want to use a dedicated DTO for JSON serialization. The macros are following the naming pattern, and you can chose the macro based on the needed features:
+There are several macros to make your life easier as long as you want to use a JSON object as serialization. The macros are following the naming pattern, and you can chose the macro based on the needed features:
 
 - All the macros start with `NLOHMANN_DEFINE`.
 - If you want a macro for the derived object, use the [`DERIVED_TYPE`](../api/macros/nlohmann_define_derived_type.md) variant, otherwise use `TYPE`.
@@ -98,13 +98,33 @@ There are several macros to make your life easier as long as you want to use a d
 
 For all the macros, the first parameter is the name of the class/struct. The `DERIVED_TYPE` macros require a second parameter of a base class. All the remaining parameters name the member variables. The `WITH_NAMES` macros require a JSON name before each of the variables.
 
+| Need access to private members                                   | Need only de-serialization                                       | Allow missing values when de-serializing                         | macro                                                                                                        |
+|------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | [**NLOHMANN_DEFINE_TYPE_INTRUSIVE**](../api/macros/nlohmann_define_type_intrusive.md)                        |
+| <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: green;">:octicons-check-circle-fill-24:</div> | [**NLOHMANN_DEFINE_TYPE_INTRUSIVE_WITH_DEFAULT**](../api/macros/nlohmann_define_type_intrusive.md)           |
+| <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: grey;">:octicons-skip-fill-24:</div>          | [**NLOHMANN_DEFINE_TYPE_INTRUSIVE_ONLY_SERIALIZE**](../api/macros/nlohmann_define_type_intrusive.md)         |
+| <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | [**NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE**](../api/macros/nlohmann_define_type_non_intrusive.md)                |
+| <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: green;">:octicons-check-circle-fill-24:</div> | [**NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT**](../api/macros/nlohmann_define_type_non_intrusive.md)   |
+| <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: grey;">:octicons-skip-fill-24:</div>          | [**NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_ONLY_SERIALIZE**](../api/macros/nlohmann_define_type_non_intrusive.md) |
+
+For _derived_ classes and structs, use the following macros
+
+| Need access to private members                                   | Need only de-serialization                                       | Allow missing values when de-serializing                         | macro                                                                                                          |
+|------------------------------------------------------------------|------------------------------------------------------------------|------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | [**NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE**](../api/macros/nlohmann_define_derived_type.md)                    |
+| <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: green;">:octicons-check-circle-fill-24:</div> | [**NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE_WITH_DEFAULT**](../api/macros/nlohmann_define_derived_type.md)       |
+| <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: grey;">:octicons-skip-fill-24:</div>          | [**NLOHMANN_DEFINE_DERIVED_TYPE_INTRUSIVE_ONLY_SERIALIZE**](../api/macros/nlohmann_define_derived_type.md)     |
+| <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | [**NLOHMANN_DEFINE_DERIVED_TYPE_NON_INTRUSIVE**](../api/macros/nlohmann_define_derived_type.md)                |
+| <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: green;">:octicons-check-circle-fill-24:</div> | [**NLOHMANN_DEFINE_DERIVED_TYPE_NON_INTRUSIVE_WITH_DEFAULT**](../api/macros/nlohmann_define_derived_type.md)   |
+| <div style="color: red;">:octicons-x-circle-fill-24:</div>       | <div style="color: green;">:octicons-check-circle-fill-24:</div> | <div style="color: grey;">:octicons-skip-fill-24:</div>          | [**NLOHMANN_DEFINE_DERIVED_TYPE_NON_INTRUSIVE_ONLY_SERIALIZE**](../api/macros/nlohmann_define_derived_type.md) |
+
 !!! info "Implementation limits"
 
     - The current macro implementations are limited to at most 63 member variables. If you want to serialize/deserialize
       types with more than 63 member variables, you need to define the `to_json`/`from_json` functions manually.
     - For the `WITH_NAMES` variants the limit is halved to 31 member variables.
 
-??? examples
+??? example
 
     The `to_json`/`from_json` functions for the `person` struct above can be created with:
 
